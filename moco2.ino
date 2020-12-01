@@ -1,14 +1,14 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <UniversalTelegramBot.h>
-#include secret.h
+#include "secrets.h"
 
-// Wifi network station credentials defined in secret.h
-#define WIFI_SSID "XXXX"
-#define WIFI_PASSWORD "XXXXX"
+// Wifi network station credentials defined in secret.h, or uncomment defines with your data, commenting #include secrets
+//#define WIFI_SSID "XXXX"
+//#define WIFI_PASSWORD "XXXXX"
 // Telegram BOT Token (Get from Botfather)
-#define BOT_TOKEN "nnnnn:xxxxxxxxxxxxxxxxxxxx"
-#define CHAT_ID "xxxxxxxxx" // Chat ID of where you want the message to go (You can use MyIdBot to get the chat ID)
+//#define BOT_TOKEN "nnnnn:xxxxxxxxxxxxxxxxxxxx"
+//#define CHAT_ID "xxxxxxxxx" // Chat ID of where you want the message to go (You can use MyIdBot to get the chat ID)
 
 #define DEBUG 0            // print log messages in serial 
 
