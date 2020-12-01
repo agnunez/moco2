@@ -16,9 +16,9 @@ There is a single flashing led instead of a display to save battery with a simpl
 
 ## Sensors and MCU's supported
 
-As the intetion is to be very cheap, a CM1106 NDIR sensor is used (~$4/unit), but MH-Z19B is also supported (~$14/unit).
+As the intetion is to be very cheap, a CM1106 NDIR sensor is used ($4/unit), but MH-Z19B is also supported ($14/unit).
 Taking into account that ESP01 cost $1 and a 16850 battery holder with charger also can be bought below $1, the total
-project cost could be very affordable (~ $10). We intend to provide one of this to every teacher in the school, so
+project cost could be very affordable ($10). We intend to provide one of this to every teacher in the school, so
 they will be responsible to keep open windows, or air conditioning working at the necessary levels.
 The code is very generic and with a very reduced BOM (co2 sensor, mcu, lipo bat with charger). We used ESP01 due to 
 cost, but any ESP or even arduino model could be used. If there is no Wifi capability, only the led warning will be
@@ -26,7 +26,7 @@ available.
 
 ## Contributions
 
-The project is part of the [CODOS]: https://github.com/miguelangelcasanova/codos to develop devices for schools to improve the safety of the air quality.
-There is a very actve Telegram channel to discuss this initiative in [Telegram CODOS channel]: https://t.me/codos_ventilacion (mostly in spanish).
+The project is part of the [CODOS](https://github.com/miguelangelcasanova/codos) to develop devices for schools to improve the safety of the air quality.
+There is a very actve Telegram channel to discuss this initiative in [Telegram CODOS channel](https://t.me/codos_ventilacion) (mostly in spanish).
 
-This code is actively maintained in [https://github.com/agnunez/moco2]: https://github.com/agnunez/moco2 by [@agnuca]: http://twitter.com/agnuca and contributions are welcome!
+This code is actively maintained in [https://github.com/agnunez/moco2](https://github.com/agnunez/moco2) by [@agnuca](http://twitter.com/agnuca) and contributions are welcome!
