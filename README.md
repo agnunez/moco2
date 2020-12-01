@@ -26,7 +26,7 @@ available.
 
 ## Contributions
 
-The project is part of the CODOS initiative (https://github.com/miguelangelcasanova/codos) to develop devices for schools to improve the safety of the air quality.
-There is a very actve Telegram channel to discuss this initiative in: https://t.me/codos_ventilacion (mostly in spanish).
+The project is part of the [CODOS]: https://github.com/miguelangelcasanova/codos to develop devices for schools to improve the safety of the air quality.
+There is a very actve Telegram channel to discuss this initiative in [Telegram CODOS channel]: https://t.me/codos_ventilacion (mostly in spanish).
 
-This code is actively maintained in https://github.com/agnunez/moco2 by @agnuca (agnunez in github.com) and contributions are welcome!
+This code is actively maintained in [https://github.com/agnunez/moco2]: https://github.com/agnunez/moco2 by [@agnuca]: http://twitter.com/agnuca and contributions are welcome!
