@@ -1,5 +1,5 @@
 #define OLED 1   // uncomment to use oled display
-#define DEBUG 0  // set to 1 if debug through serial usb console
+//#define DEBUG 1  // uncomment to debug through serial usb console
 #include <SoftwareSerial.h>
 #ifdef OLED
 #include <SSD1306Brzo.h> // Include OLED Library
@@ -10,8 +10,8 @@
 #define PPMLIMIT 1000 // CO2 ppm threshold for warning
 #define RX 0          // Receiver pin    // WROOM D3 = GPIO0, D4= GPIO2, D8=GPIO15, D9=GPIO03, D10=GPIO01
 #define TX 2          // Transmiter pin  // ESP01   
-//#define CM1106        // uncomment the co2 sensor used
-#define MHZ19B      //  "             "
+#define CM1106        // uncomment the co2 sensor used
+//#define MHZ19B      //  "             "
 SoftwareSerial co2(RX, TX);  // leave free standar uart for pc usb debug
 #ifdef OLED
 SSD1306Brzo display(0x3c, 5, 4); // Initialize OLED display
@@ -21,13 +21,17 @@ int ton=100;          // microsec to light the led while flashing
 int toff=200;         // microsec to dimm the led while flashsing
 
 void setup() {
-  pinMode(LED, OUTPUT);     
-  if(DEBUG)Serial.begin(9600);
+  pinMode(LED, OUTPUT);
+#ifdef DEBUG
+  Serial.begin(9600);
+#endif
   co2.begin(9600);
 #ifdef OLED
 display.init(); // Initialise the display
 #endif
+#ifdef DEBUG
   Serial.println("initialized");
+#endif
 }
 
 #ifdef OLED
@@ -79,7 +83,6 @@ int co2CM1106() {
     return (256 * responseHigh) + responseLow;
   } else {
     while(co2.available() > 0)  char t = co2.read();  // Clear serial input buffer;
-    Serial.println("Serial error!");
     return -1; 
   }
 }
@@ -99,7 +102,6 @@ int co2MHZ19B(){
     return (256 * responseHigh) + responseLow;
   } else {
     while(co2.available() > 0)  char t = co2.read();  // Clear serial input buffer;
-    Serial.println("Serial error!");
     return -1; 
   }
 }
@@ -117,7 +119,9 @@ void loop() {
   drawText(ppm); // Draw the text
   display.display(); // Write the buffer to the display
 #endif
+#ifdef DEBUG
   Serial.println(ppm);
+#endif
   delay(5000);                       // wait for a second
   ppmflash(ppm);
 }
