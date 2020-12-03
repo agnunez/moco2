@@ -1,21 +1,47 @@
+#define OLED 1   // uncomment to use oled display
+#define DEBUG 0  // set to 1 if debug through serial usb console
 #include <SoftwareSerial.h>
+#ifdef OLED
+#include <SSD1306Brzo.h> // Include OLED Library
+#endif
+
 // configure pinout and ppm limit
 #define LED 16        // LED pin
 #define PPMLIMIT 1000 // CO2 ppm threshold for warning
 #define RX 0          // Receiver pin    // WROOM D3 = GPIO0, D4= GPIO2, D8=GPIO15, D9=GPIO03, D10=GPIO01
 #define TX 2          // Transmiter pin  // ESP01   
-#define CM1106        // uncomment the co2 sensor used
-//#define MHZ19B      //  "             "
+//#define CM1106        // uncomment the co2 sensor used
+#define MHZ19B      //  "             "
 SoftwareSerial co2(RX, TX);  // leave free standar uart for pc usb debug
+#ifdef OLED
+SSD1306Brzo display(0x3c, 5, 4); // Initialize OLED display
+#endif
+
 int ton=100;          // microsec to light the led while flashing
 int toff=200;         // microsec to dimm the led while flashsing
 
 void setup() {
   pinMode(LED, OUTPUT);     
-  Serial.begin(9600);
+  if(DEBUG)Serial.begin(9600);
   co2.begin(9600);
+#ifdef OLED
+display.init(); // Initialise the display
+#endif
   Serial.println("initialized");
 }
+
+#ifdef OLED
+void drawText(int ppm) { // Fuction to draw the text
+display.flipScreenVertically();
+display.setTextAlignment(TEXT_ALIGN_LEFT);
+display.setFont(ArialMT_Plain_16);
+display.drawString(0, 0, "CO2");
+display.setFont(ArialMT_Plain_24);
+display.drawString(40, 20, String(ppm)); // Print button press
+display.setFont(ArialMT_Plain_16);
+display.drawString(80, 46, "ppm" ); // Print value of analog input
+}
+#endif
 
 void flash(int n){          // flash n times
   if (n<0 || n>10) return;  // safety
@@ -85,6 +111,11 @@ void loop() {
 #endif
 #ifdef MHZ19B
   int ppm=co2MHZ19B();
+#endif
+#ifdef OLED
+  display.clear(); // Clear OLED display
+  drawText(ppm); // Draw the text
+  display.display(); // Write the buffer to the display
 #endif
   Serial.println(ppm);
   delay(5000);                       // wait for a second
