@@ -24,7 +24,7 @@
 // 7 RX GPIO03 General purpose Input/output pin. Can act as a General purpose Input/output pin when not used as RX
 // 8 Vcc +3.3v. Do not connect above +3.3v!!
 
-#define RX 3          // Receiver pin   D3 or GPIO0 
-#define TX 1          // Transmiter pin D4 or GPIO2
-#define LED 2        // Led to flash GPIO16
-#define BTN 0        // Mini joy push button    
+#define RX 3         // Receiver. ESP01 pin 7 - GPIO3 
+#define TX 1         // Transmiter. ESP01 pin 2 - GPIO1 
+#define LED 2        // Led build in ESP01 pin 3 - GPI02
+#define BTN 0        // Button. Externa to ESP01 pin 5 - GPIO0 to Ground pin 1 GND

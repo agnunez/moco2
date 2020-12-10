@@ -5,7 +5,7 @@
 #define ESP01          //  "         "
 
 //#define OLED         // uncomment to use oled display
-#define DEBUG          // uncomment to debug through serial usb console
+//#define DEBUG          // uncomment to debug through serial usb console
 
 const int PPMLIMIT=1000; // CO2 ppm threshold for warning
 const int TON=100;       // Time to keep led ON during flashing
@@ -31,7 +31,7 @@ const int DELAY=5000;    // Delay among measures
 
 
 // configure pinout and ppm limit
-SoftwareSerial co2(RX, TX);  // leave free standar uart for pc usb debug
+SoftwareSerial co2(RX, TX);  // leave free standard uart for pc usb debug
 
 #ifdef OLED
 SSD1306Brzo display(OLED_I2C_ADD, OLED_SDA, OLED_SCL);  // Initialize OLED display
@@ -80,7 +80,7 @@ void ppmflash(int ppm){
   } else if (ppm>PPMLIMIT) { // LED stay ON when over the limit (red color led preferred)
     digitalWrite(LED,LOW); 
   } else {
-    flash(int(ppm/100-4));   // LED flashes several times every hundred ( >500 once, >600 twice, >700 three times....)
+    flash(int(ppm/100-3));   // LED flashes several times every hundred ( >400 once, >500 twice, >600 three times....) until PPMLIMIT that stay ON
   }
 }
 
