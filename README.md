@@ -1,8 +1,10 @@
 # MOCO2 Mobile CO2 warning device
 
-This is a very simple MObile CO2 detector device, based on ESP8266, to be carried in a hanger on the belt. 
-The intention is to receive Telegram warning messages on your celular when you are in an dangerous environment with too high
-CO2 concentration that could mean COVID19 aerosols from other persons breath, so you can open windows or exit from the room.
+This is a very simple MObile CO2 detector device, based on ESP8266, as a weareable in a hanger on the belt. For that, main goal is "autonomy" so, saving battery (less components and lower consumption). As everyone carry a mobile phone, it will be used for moco2 command, display and alerts. In order to be affordable for every teacher on schools, we are targeting also low cost, in terms of minimum processing requirement and cheapest sensor with reliability.
+
+The intention is to receive Telegram warning messages on your celular when you are in an dangerous environment with too high CO2 concentration that could means that aerosols containing COVID19 from other persons breath could be present, so you can open windows or exit from that location.
+
+NOTE: This is an on-going development in two pieces: moco2.ino (telegram bot test), flashit (working sketch with single flashing led implementation currently working with CM1106 and MH-Z19B NDIR CO2 sensors and with optional OLED display).
 
 There is a single flashing led instead of a display to save battery with a simple behaviour:
  1. below 500ppm led is kept off
@@ -17,16 +19,19 @@ There is a single flashing led instead of a display to save battery with a simpl
 ## Sensors and MCU's supported
 
 As the intetion is to be very cheap, a CM1106 NDIR sensor is used ($4/unit), but MH-Z19B is also supported ($14/unit).
-Taking into account that ESP01 cost $1 and a 16850 battery holder with charger also can be bought below $1, the total
-project cost could be very affordable ($10). We intend to provide one of this to every teacher in the school, so
-they will be responsible to keep open windows, or air conditioning working at the necessary levels.
-The code is very generic and with a very reduced BOM (co2 sensor, mcu, lipo bat with charger). We used ESP01 due to 
-cost, but any ESP or even arduino model could be used. If there is no Wifi capability, only the led warning will be
-available.
+Taking into account that ESP01 cost $1 and a 16850 battery holder with charger also can be bought below $1, the total project cost could be very affordable ($10). We intend to provide one of this to every teacher in the school, so they will be responsible to keep open windows, or air conditioning working at the necessary levels.
+The code is very generic and with a very reduced BOM (co2 sensor, mcu, lipo battery with charger circuit). We used ESP01 due to cost, but any ESP or even arduino model could be used. If there is no Wifi capability, only the led warning will be available.
+
+# To Do's
+. Tutorial with docs about:
+.. BOM materials 
+.. Software requirements 
+.. Installation
+. PCB
+. 3D printed case stl 
 
 ## Contributions
 
-The project is part of the [CODOS](https://github.com/miguelangelcasanova/codos) to develop devices for schools to improve the safety of the air quality.
-There is a very actve Telegram channel to discuss this initiative in [Telegram CODOS channel](https://t.me/codos_ventilacion) (mostly in spanish).
+This project is part of the [CODOS](https://github.com/miguelangelcasanova/codos) initiative to develop devices for schools to improve the safety of the air quality. There is a very active Telegram channel to discuss the open product development in [Telegram CODOS channel](https://t.me/codos_ventilacion) (mostly in spanish).
 
 This code is actively maintained in [https://github.com/agnunez/moco2](https://github.com/agnunez/moco2) by [@agnuca](http://twitter.com/agnuca) and contributions are welcome!
