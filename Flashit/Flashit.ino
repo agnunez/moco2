@@ -1,24 +1,41 @@
-#define OLED 1   // uncomment to use oled display
-//#define DEBUG 1  // uncomment to debug through serial usb console
-#include <SoftwareSerial.h>
-#ifdef OLED
-#include <SSD1306Brzo.h> // Include OLED Library
+#define CM1106         // uncomment on the supported CO2 sensors
+//#define MHZ19B       //  "         "            "
+
+//#define NODEMCU      // uncomment used MCU 
+#define ESP01          //  "         "
+
+//#define OLED         // uncomment to use oled display
+#define DEBUG          // uncomment to debug through serial usb console
+
+const int PPMLIMIT=1000; // CO2 ppm threshold for warning
+const int TON=100;       // Time to keep led ON during flashing
+const int TOFF=200;      // Time to keep led OFF during flashing
+const int DELAY=5000;    // Delay among measures
+
+// 
+// Configure your options above this and in include.h files
+// 
+
+#ifdef NODEMCU              // include NodeMCU options
+#include "nodemcu.h"
 #endif
+#ifdef ESP01
+#include "esp01.h"          // include ESP01 options
+#endif
+#ifdef OLED                 // includes OLED options and library
+#include "oled.h"
+#include <SSD1306Brzo.h>        
+#endif
+
+#include <SoftwareSerial.h>  // Mandatory for CO2 sensor comms
+
 
 // configure pinout and ppm limit
-#define LED 16        // LED pin
-#define PPMLIMIT 1000 // CO2 ppm threshold for warning
-#define RX 0          // Receiver pin    // WROOM D3 = GPIO0, D4= GPIO2, D8=GPIO15, D9=GPIO03, D10=GPIO01
-#define TX 2          // Transmiter pin  // ESP01   
-#define CM1106        // uncomment the co2 sensor used
-//#define MHZ19B      //  "             "
 SoftwareSerial co2(RX, TX);  // leave free standar uart for pc usb debug
-#ifdef OLED
-SSD1306Brzo display(0x3c, 5, 4); // Initialize OLED display
-#endif
 
-int ton=100;          // microsec to light the led while flashing
-int toff=200;         // microsec to dimm the led while flashsing
+#ifdef OLED
+SSD1306Brzo display(OLED_I2C_ADD, OLED_SDA, OLED_SCL);  // Initialize OLED display
+#endif
 
 void setup() {
   pinMode(LED, OUTPUT);
@@ -41,7 +58,7 @@ display.setTextAlignment(TEXT_ALIGN_LEFT);
 display.setFont(ArialMT_Plain_16);
 display.drawString(0, 0, "CO2");
 display.setFont(ArialMT_Plain_24);
-display.drawString(40, 20, String(ppm)); // Print button press
+display.drawString(40, 20, String(ppm)); // Print butTON press
 display.setFont(ArialMT_Plain_16);
 display.drawString(80, 46, "ppm" ); // Print value of analog input
 }
@@ -51,9 +68,9 @@ void flash(int n){          // flash n times
   if (n<0 || n>10) return;  // safety
   for(int i=0;i<n;i++){
     digitalWrite(LED, LOW);
-    delay(ton);
+    delay(TON);
     digitalWrite(LED, HIGH);
-    delay(toff); 
+    delay(TOFF); 
   }
 }
 
@@ -106,6 +123,7 @@ int co2MHZ19B(){
   }
 }
 #endif
+
 // the loop function runs over and over again forever
 void loop() {
 #ifdef CM1106
@@ -115,13 +133,13 @@ void loop() {
   int ppm=co2MHZ19B();
 #endif
 #ifdef OLED
-  display.clear(); // Clear OLED display
-  drawText(ppm); // Draw the text
-  display.display(); // Write the buffer to the display
+  display.clear();    // Clear OLED display
+  drawText(ppm);      // Draw the text
+  display.display();  // Write the buffer to the display
 #endif
 #ifdef DEBUG
   Serial.println(ppm);
 #endif
-  delay(5000);                       // wait for a second
+  delay(DELAY);       // wait for delay
   ppmflash(ppm);
 }
