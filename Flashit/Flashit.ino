@@ -5,7 +5,7 @@
 #define ESP01          //  "         "
 
 //#define OLED         // uncomment to use oled display
-//#define DEBUG          // uncomment to debug through serial usb console
+#define DEBUG          // uncomment to debug through serial usb console
 
 const int PPMLIMIT=1000; // CO2 ppm threshold for warning
 const int TON=100;       // Time to keep led ON during flashing
@@ -24,6 +24,7 @@ const int BIAS=3;        // units to reduce no. of flashes from hundreds in ppm 
 #endif
 #ifdef OLED                 // includes OLED options and library
 #include "oled.h"
+#include <brzo_i2c.h>
 #include <SSD1306Brzo.h>        
 #endif
 
@@ -75,12 +76,12 @@ void flash(int n){          // flash n times
 }
 
 void ppmflash(int ppm){
-  if (ppm < 500) {           // LED off for safe ppm
+  if (ppm < 400) {           // LED off for safe ppm
     digitalWrite(LED,HIGH);
   } else if (ppm>PPMLIMIT) { // LED stay ON when over the limit (red color led preferred)
     digitalWrite(LED,LOW); 
   } else {
-    flash(int(ppm/100-BIAS));   // LED flashes several times every hundred ( >400 once, >500 twice, >600 three times....) until PPMLIMIT that stay ON
+    flash(int(ppm/100)-BIAS);   // LED flashes several times every hundred ( >400 once, >500 twice, >600 three times....) until PPMLIMIT that stay ON
   }
 }
 
