@@ -11,7 +11,7 @@ const int PPMLIMIT=1000; // CO2 ppm threshold for warning
 const int TON=100;       // Time to keep led ON during flashing
 const int TOFF=200;      // Time to keep led OFF during flashing
 const int DELAY=5000;    // Delay among measures
-
+const int BIAS=3;        // units to reduce no. of flashes from hundreds in ppm (i.e. BIAS 3 => 400..1 flash, 500..2 ) 
 // 
 // Configure your options above this and in include.h files
 // 
@@ -80,7 +80,7 @@ void ppmflash(int ppm){
   } else if (ppm>PPMLIMIT) { // LED stay ON when over the limit (red color led preferred)
     digitalWrite(LED,LOW); 
   } else {
-    flash(int(ppm/100-3));   // LED flashes several times every hundred ( >400 once, >500 twice, >600 three times....) until PPMLIMIT that stay ON
+    flash(int(ppm/100-BIAS));   // LED flashes several times every hundred ( >400 once, >500 twice, >600 three times....) until PPMLIMIT that stay ON
   }
 }
 
