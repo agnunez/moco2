@@ -1,17 +1,21 @@
+// Choose a CO2 NDIR sensor by uncommenting just one
 #define CM1106         // uncomment on the supported CO2 sensors
 //#define MHZ19B       //  "         "            "
 
-//#define NODEMCU      // uncomment used MCU 
-#define ESP01          //  "         "
+// Choose a MCU by uncommenting just one.  Pins are defined in .h files and can be modified there
+#define ESP01          // uncomment used MCU 
+//#define NODEMCU      //  "         "
 
+// Choose options at wish.
 //#define OLED         // uncomment to use oled display
-#define DEBUG          // uncomment to debug through serial usb console
+//#define DEBUG        // uncomment to debug through serial usb console (Warning! with ESP01 you need different pins for standard & optional Serials)
 
 const int PPMLIMIT=1000; // CO2 ppm threshold for warning
 const int TON=100;       // Time to keep led ON during flashing
 const int TOFF=200;      // Time to keep led OFF during flashing
 const int DELAY=5000;    // Delay among measures
-const int BIAS=3;        // units to reduce no. of flashes from hundreds in ppm (i.e. BIAS 3 => 400..1 flash, 500..2 ) 
+const int BIAS=3;        // units to reduce no. of flashes from hundreds in ppm (i.e. BIAS 3 => 400..1 flash, 500..2 flashes ) 
+
 // 
 // Configure your options above this and in include.h files
 // 
@@ -19,19 +23,22 @@ const int BIAS=3;        // units to reduce no. of flashes from hundreds in ppm 
 #ifdef NODEMCU              // include NodeMCU options
 #include "nodemcu.h"
 #endif
+
 #ifdef ESP01
 #include "esp01.h"          // include ESP01 options
 #endif
-#ifdef OLED                 // includes OLED options and library
+
+#ifdef OLED                 // includes OLED options and li4brary
 #include "oled.h"
 #include <brzo_i2c.h>
 #include <SSD1306Brzo.h>        
 #endif
 
-#include <SoftwareSerial.h>  // Mandatory for CO2 sensor comms
+#ifndef WIFI
+void WiFiOff();
+#endif
 
-
-// configure pinout and ppm limit
+#include <SoftwareSerial.h>  // Mandatory for CO2 sensor comms. It's used to avoid collision with standard Serial & devote it only for sensor comm's.
 SoftwareSerial co2(RX, TX);  // leave free standard uart for pc usb debug
 
 #ifdef OLED

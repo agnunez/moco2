@@ -1,6 +1,11 @@
 #ifndef NODEMCU
 #define NODEMCU
 #endif
+
+#ifdef ESP01
+#error Cannot defined ESP01 AND NODEMCU
+#endif
+
 // ESP8266 WeMos WROOM 2 Oled 16850
 // GPIO  Function
 // 0 D3 / Button right 
