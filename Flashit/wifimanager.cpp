@@ -9,7 +9,9 @@ extern "C" {
 
 void WiFiOn();
 void WiFiOff();
-
+//
+// Taken from pfabri at: 
+// https://arduino.stackexchange.com/questions/43376/can-the-wifi-on-esp8266-be-disabled
 //-------------------- USAGE ----------------------------------------------------------
 /* 
 void setup() {
