@@ -2,6 +2,8 @@
 
 This is a very simple **MO**bile **CO2** detector device, based on ESP8266, as a weareable in a hanger on the belt. For that, main goal is "autonomy" so, saving battery (less components and lower consumption). As everyone carry a mobile phone, it will be used for moco2 command, display and alerts. In order to be affordable for every teacher on schools, we are targeting also low cost, in terms of minimum processing requirement and cheapest sensor with reliability.
 
+![Alt Text](https://github.com/agnunez/moco2/blob/master/images/moco2.gif)
+
 The intention is to receive Telegram warning messages on your celular when you are in an dangerous environment with too high CO2 concentration that could means that aerosols containing COVID19 from other persons breath could be present, so you can open windows or exit from that location.
 
 NOTE: This is an on-going development in two pieces: moco2.ino (telegram bot test), flashit (working sketch with single flashing led implementation currently working with CM1106 and MH-Z19B NDIR CO2 sensors and with optional OLED display).
