@@ -13,7 +13,7 @@
 const int PPMLIMIT=1000; // CO2 ppm threshold for warning
 const int TON=100;       // Time to keep led ON during flashing
 const int TOFF=200;      // Time to keep led OFF during flashing
-const int DELAY=5000;    // Delay among measures
+const int DELAY=10000;   // Delay among measures
 const int BIAS=3;        // units to reduce no. of flashes from hundreds in ppm (i.e. BIAS 3 => 400..1 flash, 500..2 flashes ) 
 
 // 
@@ -36,6 +36,7 @@ const int BIAS=3;        // units to reduce no. of flashes from hundreds in ppm 
 
 #ifndef WIFI
 void WiFiOff();
+void sleepdelay(int t);
 #endif
 
 #include <SoftwareSerial.h>  // Mandatory for CO2 sensor comms. It's used to avoid collision with standard Serial & devote it only for sensor comm's.
@@ -76,9 +77,9 @@ void flash(int n){          // flash n times
   if (n<0 || n>10) return;  // safety
   for(int i=0;i<n;i++){
     digitalWrite(LED, LOW);
-    delay(TON);
+    sleepdelay(TON);
     digitalWrite(LED, HIGH);
-    delay(TOFF); 
+    sleepdelay(TOFF); 
   }
 }
 
@@ -148,6 +149,6 @@ void loop() {
 #ifdef DEBUG
   Serial.println(ppm);
 #endif
-  delay(DELAY);       // wait for delay
+  sleepdelay(DELAY);       // wait for delay
   ppmflash(ppm);
 }

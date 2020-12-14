@@ -52,3 +52,17 @@ void WiFiOff() {
     wifi_fpm_do_sleep(FPM_SLEEP_MAX_TIME);
 
 }
+
+void callback() {
+  int t=0;
+}
+
+void sleepdelay(int t){
+  uint32_t sleep_time_in_ms = t;
+  wifi_set_opmode(NULL_MODE); 
+  wifi_fpm_set_sleep_type(LIGHT_SLEEP_T); 
+  wifi_fpm_open(); 
+  wifi_fpm_set_wakeup_cb(callback);
+  wifi_fpm_do_sleep(sleep_time_in_ms *1000 );
+  delay(sleep_time_in_ms + 1); 
+}
