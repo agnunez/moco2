@@ -27,11 +27,13 @@ The code is very generic and with a very reduced BOM (co2 sensor, mcu, lipo batt
 
 # To Do's
 - [x] Sample flashing code (flashit directory)
+- [x] Lower consumption with ESP8266 Light Sleep mode. No pin soldering or reset required
 - [ ] Telegram bot. ongoing (partial test moco2.ino)
 - [ ] Tutorial. ongoing (this github README)
 - [ ] BOM materials and links
 - [ ] Software requirements (libraries, etc)
 - [ ] PCB schema
+- [x] 3D printed pcb
 - [ ] 3D printed case stl 
 
 ## Contributions
