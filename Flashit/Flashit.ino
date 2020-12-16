@@ -48,6 +48,8 @@ SSD1306Brzo display(OLED_I2C_ADD, OLED_SDA, OLED_SCL);  // Initialize OLED displ
 
 void setup() {
   pinMode(LED, OUTPUT);
+  delay(1000);
+  digitalWrite(LED, HIGH);
 #ifdef DEBUG
   Serial.begin(9600);
 #endif
@@ -73,13 +75,21 @@ display.drawString(80, 46, "ppm" ); // Print value of analog input
 }
 #endif
 
+void mydelay(int t){
+#ifndef WIFI
+  sleepdelay(t);
+#else
+  delay(t);
+#endif  
+}
+
 void flash(int n){          // flash n times
   if (n<0 || n>10) return;  // safety
   for(int i=0;i<n;i++){
     digitalWrite(LED, LOW);
-    sleepdelay(TON);
+    mydelay(TON);
     digitalWrite(LED, HIGH);
-    sleepdelay(TOFF); 
+    mydelay(TOFF); 
   }
 }
 
@@ -149,6 +159,6 @@ void loop() {
 #ifdef DEBUG
   Serial.println(ppm);
 #endif
-  sleepdelay(DELAY);       // wait for delay
+  mydelay(DELAY);       // wait for delay
   ppmflash(ppm);
 }

@@ -25,6 +25,17 @@ Taking into account that ESP01 cost $1 and a 16850 battery holder with charger a
 We intend to provide one of this to every teacher in the school, so they will be responsible to keep open windows, or air conditioning working at the necessary levels.
 The code is very generic and with a very reduced BOM (co2 sensor, mcu, lipo battery with charger circuit). We used ESP01 due to cost, but any ESP or even arduino model could be used. If there is no Wifi capability, only the led warning will be available.
 
+## Hardware connections
+
+There is a 3d printed draft PCB that can be either solder or use wirewrapping, as is my case. There are different connection schemes for each combination of sensor and MCU:
+
+### CM1106 and ESP-01
+
+This is the simplest schema, as CM1106 provides 5v(100mA) to 3.3v conversion allowing to power the ESP-01 directly (10mA current with no WiFi and Light_Sleep). We have tested with WiFi but further long term impact on CM1106 is needed.
+The diagram just connect 3.3v among the modules and cross Tx and Rx signals. CM1106 is power from 5v, so any USB cable connector can be used from PC, Mobile Charger or even a Power Pack, like in our case. With a 1000mA single 18650 LiPo battery powerbank, more than 12 h has been tested, enough for carriying a working day.
+
+![Alt Text](https://github.com/agnunez/moco2/blob/master/images/moco2_circuit_diagram.jpg)
+
 # To Do's
 - [x] Sample flashing code (flashit directory)
 - [x] Lower consumption with ESP8266 Light Sleep mode. No pin soldering or reset required
@@ -32,7 +43,7 @@ The code is very generic and with a very reduced BOM (co2 sensor, mcu, lipo batt
 - [ ] Tutorial. ongoing (this github README)
 - [ ] BOM materials and links
 - [ ] Software requirements (libraries, etc)
-- [ ] PCB schema
+- [x] PCB schema
 - [x] 3D printed pcb
 - [ ] 3D printed case stl 
 
