@@ -36,6 +36,13 @@ The diagram just connect 3.3v among the modules and cross Tx and Rx signals. CM1
 
 ![Alt Text](https://github.com/agnunez/moco2/blob/master/images/moco2_circuit_diagram.jpg)
 
+## Calibration
+
+There is a simple python program to connect an CM1106 to an USB-Ser adapter on a PC or RPI and calibrate it. The program should be run just after the sensor is switched on. It waits until sensor is heating up and when start to provides measurements, it ask the current ambient ppm. If is it runned outdoors, you can input 410. If you run it indoor, you need another reference CO2 sensor well calibrated to input current ppm of the room.
+After that it takes several seconds to adjust itself to that ppm concentration and you can disconect it and connecto to your ESP or arduino.
+ABC is on, so if is kept connected it will autocalibrate every week to the minimum reading as if were 410, so .. open your windows daily at least.
+
+
 # To Do's
 - [x] Sample flashing code (flashit directory)
 - [x] Lower consumption with ESP8266 Light Sleep mode. No pin soldering or reset required
