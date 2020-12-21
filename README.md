@@ -38,8 +38,8 @@ The diagram just connect 3.3v among the modules and cross Tx and Rx signals. CM1
 
 ## Calibration
 
-There is a simple python program to connect an CM1106 to an USB-Ser adapter on a PC or RPI and calibrate it. The program should be run just after the sensor is switched on. It waits until sensor is heating up and when start to provides measurements, it ask the current ambient ppm. If is it runned outdoors, you can input 410. If you run it indoor, you need another reference CO2 sensor well calibrated to input current ppm of the room.
-After that it takes several seconds to adjust itself to that ppm concentration and you can disconect it and connecto to your ESP or arduino.
+There is a simple python program to connect a CM1106 to an USB-Ser adapter on a PC or RPI and calibrate it. The program should be run just after the sensor is switched on. It waits until sensor is heated up (550 reading) and, after that,  when sensor start to provides real measurements, the program asks to input the current CO2 ppm. If is it runned outdoors, you can input 410. If you run it indoors, you need another reference CO2 sensor well calibrated providing room ppm to use that measurement for calibration of CM1106.
+After inserting that target reading, it takes several seconds to adjust itself to that ppm concentration. When reading is stable, it can be disconected and attached to your ESP or arduino.
 ABC is on, so if is kept connected it will autocalibrate every week to the minimum reading as if were 410, so .. open your windows daily at least.
 
 
