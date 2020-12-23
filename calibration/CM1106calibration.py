@@ -8,7 +8,7 @@ def cs(s):
 
 def readco2():
     debug = True
-    ser = serial.Serial('COM3', 9600, timeout=4)
+    ser = serial.Serial('COM18', 9600, timeout=4)
     readcmd = [0x11,0x01,0x01,0xED]
     ser.write(serial.to_bytes(readcmd))
     res = ser.read(8)        # read up to 8 bytes (timeout)
@@ -24,7 +24,7 @@ def readco2():
     return ppm
 
 def setcal(ppm):
-    ser = serial.Serial('COM3', 9600, timeout=4)
+    ser = serial.Serial('COM18', 9600, timeout=4)
     df1=int(ppm/256)
     df2=ppm%256
     calcmd = serial.to_bytes([0x11,0x03,0x03,df1,df2,0x00])

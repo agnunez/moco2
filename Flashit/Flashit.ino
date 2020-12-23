@@ -5,6 +5,7 @@
 // Choose a MCU by uncommenting just one.  Pins are defined in .h files and can be modified there
 #define ESP01          // uncomment used MCU 
 //#define NODEMCU      //  "         "
+//#define WIFI        // uncomment if we need WiFi but prevent the usage of sleepdelay low power consumption
 
 // Choose options at wish.
 //#define OLED         // uncomment to use oled display
