@@ -8,7 +8,7 @@
 //#define WIFI        // uncomment if we need WiFi but prevent the usage of sleepdelay low power consumption
 
 // Choose options at wish.
-//#define OLED         // uncomment to use oled display
+#define OLED         // uncomment to use oled display
 //#define DEBUG        // uncomment to debug through serial usb console (Warning! with ESP01 you need different pins for standard & optional Serials)
 
 const int PPMLIMIT=1000; // CO2 ppm threshold for warning
