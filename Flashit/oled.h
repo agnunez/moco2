@@ -13,6 +13,6 @@
 
 #ifdef ESP01
 #define OLED_I2C_ADD 0x3c
-#define OLED_SDA 2
-#define OLED_SCL 0
+#define OLED_SDA 0
+#define OLED_SCL 2
 #endif

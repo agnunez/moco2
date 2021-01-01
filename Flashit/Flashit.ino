@@ -9,7 +9,7 @@
 
 // Choose options at wish.
 #define OLED         // uncomment to use oled display
-//#define DEBUG        // uncomment to debug through serial usb console (Warning! with ESP01 you need different pins for standard & optional Serials)
+//#define DEBUG        // uncomment to debug through serial usb console (Warning! with ESP01 you need differeuznt pins for standard & optional Serials)
 
 const int PPMLIMIT=1000; // CO2 ppm threshold for warning
 const int TON=100;       // Time to keep led ON during flashing
@@ -32,7 +32,8 @@ const int BIAS=3;        // units to reduce no. of flashes from hundreds in ppm 
 #ifdef OLED                 // includes OLED options and li4brary
 #include "oled.h"
 #include <brzo_i2c.h>
-#include <SSD1306Brzo.h>        
+#include <SSD1306Brzo.h> 
+#include "font.h"       
 #endif
 
 #ifndef WIFI
@@ -64,15 +65,19 @@ display.init(); // Initialise the display
 }
 
 #ifdef OLED
-void drawText(int ppm) { // Fuction to draw the text
-display.flipScreenVertically();
-display.setTextAlignment(TEXT_ALIGN_LEFT);
-display.setFont(ArialMT_Plain_16);
-display.drawString(0, 0, "CO2");
-display.setFont(ArialMT_Plain_24);
-display.drawString(40, 20, String(ppm)); // Print butTON press
-display.setFont(ArialMT_Plain_16);
-display.drawString(80, 46, "ppm" ); // Print value of analog input
+void drawText(int ppm) { // Fuction to draw the text in oled display
+  String sppm = String(ppm,DEC);
+  display.init(); // Initialise the display
+  display.clear();    // Clear OLED display
+  display.flipScreenVertically();
+  display.setTextAlignment(TEXT_ALIGN_CENTER);
+  display.setFont(ArialMT_Plain_16);
+  display.drawString(15, 0, "CO2");
+  display.setFont(Dialog_plain_26);
+  display.drawString(64, 20, sppm);
+  display.setFont(ArialMT_Plain_16);
+  display.drawString(110, 46  , "ppm" ); // Print value of analog input
+  display.display();  // Write the buffer to the display
 }
 #endif
 
@@ -85,7 +90,7 @@ void mydelay(int t){
 }
 
 void flash(int n){          // flash n times
-  if (n<0 || n>10) return;  // safety
+  if (n<0) return;  // safety
   for(int i=0;i<n;i++){
     digitalWrite(LED, LOW);
     mydelay(TON);
@@ -97,8 +102,10 @@ void flash(int n){          // flash n times
 void ppmflash(int ppm){
   if (ppm < 400) {           // LED off for safe ppm
     digitalWrite(LED,HIGH);
+    mydelay(TON); 
   } else if (ppm>PPMLIMIT) { // LED stay ON when over the limit (red color led preferred)
     digitalWrite(LED,LOW); 
+    mydelay(TON); 
   } else {
     flash(int(ppm/100)-BIAS);   // LED flashes several times every hundred ( >400 once, >500 twice, >600 three times....) until PPMLIMIT that stay ON
   }
@@ -153,13 +160,11 @@ void loop() {
   int ppm=co2MHZ19B();
 #endif
 #ifdef OLED
-  display.clear();    // Clear OLED display
   drawText(ppm);      // Draw the text
-  display.display();  // Write the buffer to the display
 #endif
 #ifdef DEBUG
   Serial.println(ppm);
 #endif
-  mydelay(DELAY);       // wait for delay
   ppmflash(ppm);
+  mydelay(DELAY);       // wait for delay
 }
