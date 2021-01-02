@@ -1,5 +1,13 @@
-import serial,time
+# install with: sudo python -m pip install pyserial
+import serial
 
+comport = 'COM4'
+combaud = 9600
+debug = True
+
+def pba(data):      #print bytearray data
+    print(''.join('{:02x}'.format(x) for x in data))
+    
 def cs(s):
     cs = 0
     for i in range(0,len(s)-1):
@@ -7,8 +15,7 @@ def cs(s):
     return 256 - cs % 256
 
 def readco2():
-    debug = True
-    ser = serial.Serial('COM18', 9600, timeout=4)
+    ser = serial.Serial(comport, combaud, timeout=4)
     readcmd = [0x11,0x01,0x01,0xED]
     ser.write(serial.to_bytes(readcmd))
     res = ser.read(8)        # read up to 8 bytes (timeout)
@@ -23,8 +30,9 @@ def readco2():
     ser.close()
     return ppm
 
-def setcal(ppm):
-    ser = serial.Serial('COM18', 9600, timeout=4)
+def calibrate():
+    ser = serial.Serial(comport, combaud, timeout=4)
+    ppm = int(input("Set current ppm: "))
     df1=int(ppm/256)
     df2=ppm%256
     calcmd = serial.to_bytes([0x11,0x03,0x03,df1,df2,0x00])
@@ -32,24 +40,56 @@ def setcal(ppm):
     ser.write(serial.to_bytes(calcmd))
     res = ser.read(4)
     ser.close()
-    return res
+    if (debug):
+        print (res)
+    return
 
-ppm = 550
-
-while ppm == 550 or ppm < 0 :
+def abc():
     try:
-      ppm = readco2()
-      print("Heating")
+        auto = int(input("Set auto calibration ABC? (open=1,close=0,def=open): "))
     except:
-      print("cs error")
-    time.sleep(5)
-
-ppm = int(input("Set current ppm: "))
-print (setcal(ppm))
-
+        auto=1
+    try:
+        days = int(input("number of days (def=7):"))
+    except:
+        days = 7
+    try:
+        base = int(input("base value (def=400):"))
+    except:
+        base = 400
+    if (auto == 1):
+        df2=0 # ABC open 
+    else:
+        df2=2 # ABC close
+    if (days > 0 and days < 31):
+        df3=days
+    else:
+        print("invalid calibration cycles days, beyond (1-30)")
+        return
+    df1 = 0x64
+    df4 = int(base/256)
+    df5 = base%256
+    df6 = 0x64
+    ser = serial.Serial(comport, combaud, timeout=4)
+    abccmd = serial.to_bytes([0x11,0x07,0x10,df1,df2,df3,df4,df5,df6,0x00])
+    abccmd = abccmd[0:9]+serial.to_bytes([cs(abccmd)])
+    if (debug): pba(abccmd)
+    ser.write(serial.to_bytes(abccmd))
+    res = ser.read(4)
+    ser.close()    
+    
 while True:
     try:
-        print(readco2())
+        ppm = readco2()
     except:
         print("cs error")
-    time.sleep(5)
+    a = input("ret=ppm,c=cal,a=abc,q=quit?")
+    if (ppm == 550):
+        print("Heating, ", end='')
+    print("ppm: ", ppm)
+    if (a=="c"):
+        calibrate()        
+    if (a=="a"):
+        abc()        
+    if (a=="q"):
+        break        
