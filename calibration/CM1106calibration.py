@@ -21,7 +21,37 @@ def readco2():
     res = ser.read(8)        # read up to 8 bytes (timeout)
     ppm = res[3]*256+res[4]
     if debug:
-        print("df3: ", res[5]," ppm: ", end='')
+        x=res[5]
+        print("df3: ",bin(x),", ", end='')
+        if (x&(1<<6)):
+            print ("drift, ", end='')
+        else:
+            print ("no drift, ", end='')
+        if (x&(1<<5)):
+            print ("light aging, ", end='')
+        else:
+            print ("no aging, ", end='')
+        if (x&(1<<4)):
+            print ("non calibrated, ", end='')
+        else:
+            print ("calibrated, ", end='')
+        if (x&(1<<3)):
+            print ("< range, ", end='')
+        else:
+            print ("normal range, ", end='')
+        if (x&(1<<2)):
+            print ("> range, ",  end='')
+        else:
+            print ("normal range, ", end='')
+        if (x&(1<<1)):
+            print ("s.error, ",  end='')
+        else:
+            print ("s.ok, ", end='')
+        if (x&(1<<0)):
+            print ("preheat completed")
+        else:
+            print ("preheating, ")
+        print(" ppm: ", end='')
     if (cs(res) != res[7]):
         ser.flushInput()
         print(res)
@@ -76,14 +106,37 @@ def abc():
     if (debug): pba(abccmd)
     ser.write(serial.to_bytes(abccmd))
     res = ser.read(4)
-    ser.close()    
+    ser.close()
+
+def swver():
+    ser = serial.Serial(comport, combaud, timeout=4)
+    readcmd = [0x11,0x01,0x1E,0xD0]
+    ser.write(serial.to_bytes(readcmd))
+    res = ser.read(15)        # read up to 8 bytes (timeout)
+    print("sw version: ", end='')
+    for i in range(3,15):
+        print(chr(res[i]), end='')
+    print("")
+    return
+
+def sernum():
+    ser = serial.Serial(comport, combaud, timeout=4)
+    readcmd = [0x11,0x01,0x1F,0xCF]
+    ser.write(serial.to_bytes(readcmd))
+    res = ser.read(9)        # read up to 8 bytes (timeout)
+    print("serial number: ", end='')
+    for i in range(3,7):
+        print(res[i], end='')
+    print("")
+    return
+
     
 while True:
     try:
         ppm = readco2()
     except:
         print("cs error")
-    a = input("ret=ppm,c=cal,a=abc,q=quit?")
+    a = input("ret=ppm, c=cal, a=abc, v=version, s=sernum, q=quit?")
     if (ppm == 550):
         print("Heating, ", end='')
     print("ppm: ", ppm)
@@ -91,5 +144,9 @@ while True:
         calibrate()        
     if (a=="a"):
         abc()        
+    if (a=="v"):
+        swver()        
+    if (a=="s"):
+        sernum()        
     if (a=="q"):
         break        
