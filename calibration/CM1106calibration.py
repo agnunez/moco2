@@ -1,9 +1,12 @@
 # install with: sudo python -m pip install pyserial
-import serial
+# to stop reading and get options menu prompt, press ctrl-c
 
-comport = 'COM4'
+import serial
+from time import sleep 
+
+comport = 'COM18'
 combaud = 9600
-debug = True
+debug = False
 
 def pba(data):      #print bytearray data
     print(''.join('{:02x}'.format(x) for x in data))
@@ -14,13 +17,13 @@ def cs(s):
         cs+=s[i]
     return 256 - cs % 256
 
-def readco2():
+def readco2(info):
     ser = serial.Serial(comport, combaud, timeout=4)
     readcmd = [0x11,0x01,0x01,0xED]
     ser.write(serial.to_bytes(readcmd))
     res = ser.read(8)        # read up to 8 bytes (timeout)
     ppm = res[3]*256+res[4]
-    if debug:
+    if info:
         x=res[5]
         print("df3: ",bin(x),", ", end='')
         if (x&(1<<6)):
@@ -51,7 +54,6 @@ def readco2():
             print ("preheat completed")
         else:
             print ("preheating, ")
-        print(" ppm: ", end='')
     if (cs(res) != res[7]):
         ser.flushInput()
         print(res)
@@ -70,8 +72,7 @@ def calibrate():
     ser.write(serial.to_bytes(calcmd))
     res = ser.read(4)
     ser.close()
-    if (debug):
-        print (res)
+    if (debug):  print (res)
     return
 
 def abc():
@@ -130,16 +131,15 @@ def sernum():
     print("")
     return
 
-    
-while True:
-    try:
-        ppm = readco2()
-    except:
-        print("cs error")
-    a = input("ret=ppm, c=cal, a=abc, v=version, s=sernum, q=quit?")
-    if (ppm == 550):
-        print("Heating, ", end='')
-    print("ppm: ", ppm)
+def info():
+    ppm = readco2(True)
+    return
+
+def incmdexe():
+    print("choose command letter and press [enter]")
+    a = input("i=info, c=cal, a=abc, v=version, s=sernum, q=quit? ")
+    if (a=="i"):
+        info()        
     if (a=="c"):
         calibrate()        
     if (a=="a"):
@@ -149,4 +149,20 @@ while True:
     if (a=="s"):
         sernum()        
     if (a=="q"):
-        break        
+        quit()
+    return
+
+print("press just once CTRL-C to get options menu prompt and wait")
+while True:
+    try:
+        while True:
+            try:
+                ppm = readco2(False)
+                if (ppm == 550):
+                    print("Heating, ", end='')
+                print("ppm: ", ppm)
+            except:
+                print("cs error")    
+            sleep(5)
+    except KeyboardInterrupt:
+        incmdexe()
